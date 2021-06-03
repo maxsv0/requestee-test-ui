@@ -17,14 +17,6 @@ import {CommonModule} from "@angular/common";
     AppRoutingModule
   ],
   providers: [
-    // {
-    //   provide: OAuth2Client,
-    //   useValue: new OAuth2Client(
-    //     environment.gAPI.client_id,
-    //     environment.gAPI.client_secret,
-    //     environment.gAPI.redirect,
-    //   ),
-    // },
   ],
   bootstrap: [AppComponent]
 })
