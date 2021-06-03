@@ -1,6 +1,13 @@
 <p>index works!</p>
 
+<span *ngIf="getUser()">{{getUser().getId()}}</span>
+
+<button *ngIf="getUser()" class="btn btn-default" (click)="logout()">
+  LogOUT
+</button>
 
 <button class="btn btn-default" (click)="login()">
   Login
 </button>
+
+

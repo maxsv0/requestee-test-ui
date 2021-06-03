@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthService} from "../auth.service";
 
 @Component({
   selector: 'app-index',
@@ -7,14 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class IndexComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  getUser() {
+    return this.authService.getUser();
+  }
 
   login() {
+    this.authService.authenticate();
+  }
 
+  logout() {
+    this.authService.logout();
   }
 
 }

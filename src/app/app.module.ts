@@ -3,8 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {environment} from "../environments/environment";
 import { IndexComponent } from './index/index.component';
+import {CommonModule} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -13,6 +13,7 @@ import { IndexComponent } from './index/index.component';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     AppRoutingModule
   ],
   providers: [
