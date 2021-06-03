@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from "../auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-index',
@@ -10,7 +11,8 @@ export class IndexComponent implements OnInit {
 
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router:  Router,
   ) { }
 
   ngOnInit(): void {
@@ -22,6 +24,8 @@ export class IndexComponent implements OnInit {
 
   login() {
     this.authService.authenticate();
+
+    this.router.navigate(['home']);
   }
 
   logout() {

@@ -1,0 +1,8 @@
+<p>home works!</p>
+
+<div *ngIf="getGSuiteUsers()">
+  <div *ngFor="let user of getGSuiteUsers()">
+    {{user.primaryEmail}} ------
+    {{user.isEnrolledIn2Sv}}
+  </div>
+</div>
