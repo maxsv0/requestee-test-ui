@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {environment} from "../environments/environment";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import GoogleAuth = gapi.auth2.GoogleAuth;
 import {GSuiteUser} from "./model/gsuite-user";
 import {BehaviorSubject, Observable} from "rxjs";
+import GoogleAuth = gapi.auth2.GoogleAuth;
 
 @Injectable({
   providedIn: 'root'
@@ -19,17 +19,20 @@ export class AuthService {
   private currentTokenSubject: BehaviorSubject<string>;
 
   constructor(private http: HttpClient) {
-    this.currentTokenSubject = new BehaviorSubject<string>(JSON.parse(localStorage.getItem('token') || ''));
+    this.currentTokenSubject = new BehaviorSubject<string>(localStorage.getItem('token')  || '');
     this.currentToken = this.currentTokenSubject.asObservable();
   }
 
-  getGSuiteUsers() {
-    let token = this.user.getAuthResponse().access_token;
+  getGSuiteUsers(token: string) {
     let params = new HttpParams().set('token', token);
 
     console.log('now doConnect');
 
-    return this.http.get<GSuiteUser[]>('https://requestee-test.ew.r.appspot.com/connect', { params: params });
+    return this.http.get<GSuiteUser[]>('https://requestee-test.ew.r.appspot.com/connect', {params: params});
+  }
+
+  public getCurrentToken(): Observable<string> {
+    return this.currentToken;
   }
 
   public get currentTokenValue(): string {
@@ -50,6 +53,9 @@ export class AuthService {
       await this.initGoogleAuth();
     }
 
+    localStorage.setItem('token', '');
+    this.currentTokenSubject.next('');
+
     // Resolve or reject signin Promise
     return new Promise(async () => {
       this.authInstance.signOut();
@@ -57,21 +63,20 @@ export class AuthService {
     });
   }
 
-  async authenticate(): Promise<gapi.auth2.GoogleUser> {
+  async authenticate() : Promise<void>{
 
     // Initialize gapi if not done yet
     if (!this.gapiSetup) {
       await this.initGoogleAuth();
     }
 
-    // Resolve or reject signin Promise
     return new Promise(async () => {
       await this.authInstance.signIn().then(
         user => {
           this.user = user;
           let token = this.user.getAuthResponse().access_token;
 
-          localStorage.setItem('token', JSON.stringify(token));
+          localStorage.setItem('token', token);
           this.currentTokenSubject.next(token);
         },
         error => this.error = error);
@@ -84,8 +89,6 @@ export class AuthService {
     const pload = new Promise((resolve) => {
       gapi.load('auth2', resolve);
     });
-
-    console.log(pload);
 
     // When the first promise resolves, it means we have gapi
     // loaded and that we can call gapi.init

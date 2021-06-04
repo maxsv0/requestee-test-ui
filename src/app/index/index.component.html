@@ -1,13 +1,13 @@
-<p>index works!</p>
-
-<span *ngIf="getUser()">{{getUser().getId()}}</span>
-
-<button *ngIf="getUser()" class="btn btn-default" (click)="logout()">
-  LogOUT
-</button>
-
-<button class="btn btn-default" (click)="login()">
-  Login
-</button>
-
+<div class="container bg-white mt-5 p-5">
+  <div class="row text-center my-5 py-5">
+    <div class="col-3 offset-3">
+      <h4>MFA on GSuite</h4>
+    </div>
+    <div class="col-3">
+      <button class="btn btn-primary px-4" (click)="login()">
+        Connect API
+      </button>
+    </div>
+  </div>
+</div>
 

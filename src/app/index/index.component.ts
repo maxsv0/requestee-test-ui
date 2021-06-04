@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth.service";
 import {Router} from "@angular/router";
 
@@ -8,14 +8,19 @@ import {Router} from "@angular/router";
   styleUrls: ['./index.component.scss']
 })
 export class IndexComponent implements OnInit {
-
-
   constructor(
     private authService: AuthService,
-    private router:  Router,
-  ) { }
+    private router: Router,
+  ) {
+  }
 
   ngOnInit(): void {
+    this.authService.getCurrentToken().subscribe(token => {
+      if (token !== null && token !== '') {
+        console.log('Token = ' + token);
+        this.router.navigate(['./home']);
+      }
+    });
   }
 
   getUser() {
@@ -24,8 +29,6 @@ export class IndexComponent implements OnInit {
 
   login() {
     this.authService.authenticate();
-
-    this.router.navigate(['home']);
   }
 
   logout() {

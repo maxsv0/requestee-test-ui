@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth.service";
 import {GSuiteUser} from "../model/gsuite-user";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-home',
@@ -8,15 +9,28 @@ import {GSuiteUser} from "../model/gsuite-user";
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  private gSuiteUsers: GSuiteUser[] = [];
+  gSuiteUsers: GSuiteUser[] = [];
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
   ) {
-    this.authService.getGSuiteUsers().subscribe((data: GSuiteUser[]) => this.gSuiteUsers = data);
   }
 
   ngOnInit(): void {
+    this.authService.getCurrentToken().subscribe(token => {
+      if (token !== null && token !== '') {
+
+        this.authService.getGSuiteUsers(token)
+          .subscribe(data => {
+            console.log('data====' + data)
+            this.gSuiteUsers = data;
+          });
+      } else {
+        console.log('go /==');
+        this.router.navigate(['./']);
+      }
+    });
   }
 
   getGSuiteUsers() {
@@ -26,5 +40,4 @@ export class HomeComponent implements OnInit {
   disconnect() {
     this.authService.logout();
   }
-
 }
