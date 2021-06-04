@@ -10,6 +10,7 @@ import {Router} from "@angular/router";
 })
 export class HomeComponent implements OnInit {
   gSuiteUsers: GSuiteUser[] = [];
+  gSuiteMFAPassed = false;
 
   constructor(
     private authService: AuthService,
@@ -23,8 +24,18 @@ export class HomeComponent implements OnInit {
 
         this.authService.getGSuiteUsers(token)
           .subscribe(data => {
-            console.log('data====' + data)
-            this.gSuiteUsers = data;
+            let users:GSuiteUser[] = [];
+            let gSuiteMFAPassed = true;
+
+            for (let user of data) {
+              if (!user.isEnrolledIn2Sv) {
+                gSuiteMFAPassed = false;
+                users.push(user);
+              }
+            }
+
+            this.gSuiteUsers = users;
+            this.gSuiteMFAPassed = gSuiteMFAPassed;
           });
       } else {
         console.log('go /==');

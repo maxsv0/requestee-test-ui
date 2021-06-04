@@ -1,19 +1,33 @@
 <div class="container bg-white mt-5 p-5">
-  <div class="row my-5 py-5">
+  <div class="row my-5">
     <div class="col-12">
       <h4>Tasks</h4>
     </div>
-    <div class="col-12">
-        <div *ngFor="let user of this.gSuiteUsers">
-          {{user.primaryEmail}}   ------
-          {{user.name.fullName}}   ------
-          {{user.isEnrolledIn2Sv}}
-        </div>
+    <div class="col-10 mt-5">
+      <h4>
+        <span class="badge badge-danger" *ngIf="!gSuiteMFAPassed">!</span> MFA on GSuite
+      </h4>
+    </div>
+    <div class="col-2 mt-5">
+      <span class="pull-right text-danger" *ngIf="!gSuiteMFAPassed">Issue detected</span>
+      <span class="pull-right text-success" *ngIf="gSuiteMFAPassed">Your are fine</span>
+    </div>
+    <div class="col-12 mb-5">
+      <hr>
     </div>
 
-    <div class="col-12">
+    <div class="col-10">
+      <h3>The following accounts are not protected with MFA</h3>
+      <hr>
+      <div *ngFor="let user of this.gSuiteUsers">
+        <h5>{{user.name.fullName}}</h5>
+        <div>{{user.primaryEmail}}</div>
+      </div>
+    </div>
+
+    <div class="col-2">
       <button class="btn btn-default" (click)="disconnect()">
-        disconnect
+        Disable monitoring
       </button>
     </div>
   </div>
